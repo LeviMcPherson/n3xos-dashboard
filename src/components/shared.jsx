@@ -1,6 +1,6 @@
 import { RefreshCw, AlertTriangle, Eye, CheckCircle } from 'lucide-react'
 
-// âââ LOADER âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── LOADER ─────────────────────────────────────────────────
 export function Loader() {
   return (
     <div className="flex items-center justify-center h-64">
@@ -10,7 +10,7 @@ export function Loader() {
   )
 }
 
-// âââ ERROR ââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── ERROR ──────────────────────────────────────────────────
 export function ErrorBox({ message, onRetry }) {
   return (
     <div className="bg-slate-800 rounded-lg p-6 border border-red-800 text-center">
@@ -25,7 +25,7 @@ export function ErrorBox({ message, onRetry }) {
   )
 }
 
-// âââ KPI CARD âââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── KPI CARD ───────────────────────────────────────────────
 const kpiColors = {
   cyan: 'border-cyan-600 text-cyan-400',
   amber: 'border-amber-600 text-amber-400',
@@ -45,7 +45,7 @@ export function KpiCard({ label, value, sub, color = 'cyan' }) {
   )
 }
 
-// âââ BADGE ââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── BADGE ──────────────────────────────────────────────────
 const badgeStyles = {
   default: 'bg-slate-700 text-slate-300',
   critical: 'bg-red-900 text-red-300',
@@ -74,7 +74,7 @@ export function Badge({ text, variant = 'default' }) {
   )
 }
 
-// âââ SBGM BAR âââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── SBGM BAR ───────────────────────────────────────────────
 export function SbgmBar({ sbgm, compact = false }) {
   if (!sbgm) return <span className="text-slate-600 text-xs">No SBGM read</span>
   const dims = [
@@ -113,16 +113,31 @@ export function SbgmBar({ sbgm, compact = false }) {
   )
 }
 
-// âââ PC STAGE âââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── PC STAGE ───────────────────────────────────────────────
+const pcFills = { cold: 0, curious: 25, engaged: 50, trusting: 75, aligned: 90, committed: 100 }
+const pcColors = { cold: '#64748b', curious: '#38bdf8', engaged: '#22d3ee', trusting: '#2dd4bf', aligned: '#a78bfa', committed: '#34d399' }
+
 export function PcStageIndicator({ stage, direction }) {
-  const stages = { cold: 'â', curious: 'â', engaged: 'â', trusting: 'â', aligned: 'â', committed: 'â' }
-  const arrows = { advancing: 'â', regressing: 'â', static: 'â' }
-  return <span className="font-mono text-sm" title={`${stage} ${direction}`}>{stages[stage] || '?'} {arrows[direction] || ''}</span>
+  const fill = pcFills[stage] ?? 0
+  const color = pcColors[stage] || '#64748b'
+  const arrows = { advancing: '\u2192', regressing: '\u2190', static: '\u2014' }
+  return (
+    <span className="inline-flex items-center gap-1 text-sm" title={`${stage} ${direction || ''}`}>
+      <svg width="14" height="14" viewBox="0 0 14 14">
+        <circle cx="7" cy="7" r="6" fill="none" stroke="#475569" strokeWidth="1.5" />
+        {fill > 0 && (
+          <circle cx="7" cy="7" r="5" fill={color} fillOpacity={fill / 100}
+            stroke={color} strokeWidth={fill === 100 ? 0 : 0.5} />
+        )}
+      </svg>
+      <span className="text-slate-400">{arrows[direction] || ''}</span>
+    </span>
+  )
 }
 
-// âââ TIME AGO âââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── TIME AGO ───────────────────────────────────────────────
 export function TimeAgo({ date }) {
-  if (!date) return <span className="text-slate-600">â</span>
+  if (!date) return <span className="text-slate-600">\u2014</span>
   const diff = Date.now() - new Date(date).getTime()
   const mins = Math.floor(diff / 60000)
   const hrs = Math.floor(diff / 3600000)
@@ -135,7 +150,7 @@ export function TimeAgo({ date }) {
   return <span className="text-slate-500 text-xs">{text}</span>
 }
 
-// âââ EMPTY STATE ââââââââââââââââââââââââââââââââââââââââââââ
+// ─── EMPTY STATE ────────────────────────────────────────────
 export function EmptyState({ message, icon: Icon = Eye }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-slate-500">
@@ -145,7 +160,7 @@ export function EmptyState({ message, icon: Icon = Eye }) {
   )
 }
 
-// âââ PAGE HEADER ââââââââââââââââââââââââââââââââââââââââââââ
+// ─── PAGE HEADER ────────────────────────────────────────────
 export function PageHeader({ title, count, onRefresh }) {
   return (
     <div className="flex items-center justify-between">
