@@ -1,0 +1,162 @@
+import { RefreshCw, AlertTriangle, Eye, CheckCircle } from 'lucide-react'
+
+// âââ LOADER âââââââââââââââââââââââââââââââââââââââââââââââââ
+export function Loader() {
+  return (
+    <div className="flex items-center justify-center h-64">
+      <RefreshCw className="w-6 h-6 text-cyan-400 animate-spin" />
+      <span className="ml-3 text-slate-400">Loading...</span>
+    </div>
+  )
+}
+
+// âââ ERROR ââââââââââââââââââââââââââââââââââââââââââââââââââ
+export function ErrorBox({ message, onRetry }) {
+  return (
+    <div className="bg-slate-800 rounded-lg p-6 border border-red-800 text-center">
+      <AlertTriangle className="w-8 h-8 text-red-400 mx-auto mb-2" />
+      <p className="text-red-300 mb-3">{message}</p>
+      {onRetry && (
+        <button onClick={onRetry} className="px-4 py-2 bg-red-900 text-red-200 rounded hover:bg-red-800 text-sm">
+          Retry
+        </button>
+      )}
+    </div>
+  )
+}
+
+// âââ KPI CARD âââââââââââââââââââââââââââââââââââââââââââââââ
+const kpiColors = {
+  cyan: 'border-cyan-600 text-cyan-400',
+  amber: 'border-amber-600 text-amber-400',
+  red: 'border-red-600 text-red-400',
+  emerald: 'border-emerald-600 text-emerald-400',
+  purple: 'border-purple-600 text-purple-400',
+}
+
+export function KpiCard({ label, value, sub, color = 'cyan' }) {
+  const c = kpiColors[color] || kpiColors.cyan
+  return (
+    <div className={`bg-slate-800 rounded-lg p-4 border-l-4 ${c}`}>
+      <div className="text-xs uppercase tracking-wider text-slate-500 mb-1">{label}</div>
+      <div className={`text-2xl font-bold ${c.split(' ')[1]}`}>{value}</div>
+      {sub && <div className="text-xs text-slate-500 mt-1">{sub}</div>}
+    </div>
+  )
+}
+
+// âââ BADGE ââââââââââââââââââââââââââââââââââââââââââââââââââ
+const badgeStyles = {
+  default: 'bg-slate-700 text-slate-300',
+  critical: 'bg-red-900 text-red-300',
+  high: 'bg-amber-900 text-amber-300',
+  medium: 'bg-blue-900 text-blue-300',
+  low: 'bg-slate-700 text-slate-400',
+  open: 'bg-cyan-900 text-cyan-300',
+  surfaced: 'bg-purple-900 text-purple-300',
+  acknowledged: 'bg-indigo-900 text-indigo-300',
+  resolved: 'bg-emerald-900 text-emerald-300',
+  proposed: 'bg-amber-900 text-amber-300',
+  approved: 'bg-cyan-900 text-cyan-300',
+  executed: 'bg-emerald-900 text-emerald-300',
+  active: 'bg-emerald-900 text-emerald-300',
+  inactive: 'bg-slate-700 text-slate-500',
+  observed: 'bg-cyan-900 text-cyan-300',
+  completed: 'bg-emerald-900 text-emerald-300',
+  failed: 'bg-red-900 text-red-300',
+}
+
+export function Badge({ text, variant = 'default' }) {
+  return (
+    <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${badgeStyles[variant] || badgeStyles.default}`}>
+      {text}
+    </span>
+  )
+}
+
+// âââ SBGM BAR âââââââââââââââââââââââââââââââââââââââââââââââ
+export function SbgmBar({ sbgm, compact = false }) {
+  if (!sbgm) return <span className="text-slate-600 text-xs">No SBGM read</span>
+  const dims = [
+    { key: 'S', label: 'Security', value: sbgm.security, color: 'bg-blue-500' },
+    { key: 'B', label: 'Belonging', value: sbgm.belonging, color: 'bg-purple-500' },
+    { key: 'G', label: 'Growth', value: sbgm.growth, color: 'bg-emerald-500' },
+    { key: 'M', label: 'Meaning', value: sbgm.meaning, color: 'bg-amber-500' },
+  ]
+  const max = Math.max(...dims.map(d => d.value || 0))
+
+  if (compact) {
+    return (
+      <div className="flex gap-1 items-end h-6">
+        {dims.map(d => (
+          <div key={d.key} className="flex flex-col items-center">
+            <div className={`w-3 ${d.color} rounded-sm`} style={{ height: `${(d.value || 0) * 20}px` }} title={`${d.label}: ${((d.value || 0) * 100).toFixed(0)}%`} />
+            <span className={`text-xs mt-0.5 ${d.value === max && max > 0 ? 'text-white font-bold' : 'text-slate-500'}`}>{d.key}</span>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-1.5">
+      {dims.map(d => (
+        <div key={d.key} className="flex items-center gap-2">
+          <span className={`w-4 text-xs font-mono ${d.value === max && max > 0 ? 'text-white font-bold' : 'text-slate-500'}`}>{d.key}</span>
+          <div className="flex-1 bg-slate-700 rounded-full h-2">
+            <div className={`${d.color} h-2 rounded-full transition-all`} style={{ width: `${(d.value || 0) * 100}%` }} />
+          </div>
+          <span className="text-xs text-slate-400 w-8 text-right">{((d.value || 0) * 100).toFixed(0)}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// âââ PC STAGE âââââââââââââââââââââââââââââââââââââââââââââââ
+export function PcStageIndicator({ stage, direction }) {
+  const stages = { cold: 'â', curious: 'â', engaged: 'â', trusting: 'â', aligned: 'â', committed: 'â' }
+  const arrows = { advancing: 'â', regressing: 'â', static: 'â' }
+  return <span className="font-mono text-sm" title={`${stage} ${direction}`}>{stages[stage] || '?'} {arrows[direction] || ''}</span>
+}
+
+// âââ TIME AGO âââââââââââââââââââââââââââââââââââââââââââââââ
+export function TimeAgo({ date }) {
+  if (!date) return <span className="text-slate-600">â</span>
+  const diff = Date.now() - new Date(date).getTime()
+  const mins = Math.floor(diff / 60000)
+  const hrs = Math.floor(diff / 3600000)
+  const days = Math.floor(diff / 86400000)
+  let text
+  if (mins < 1) text = 'just now'
+  else if (mins < 60) text = `${mins}m ago`
+  else if (hrs < 24) text = `${hrs}h ago`
+  else text = `${days}d ago`
+  return <span className="text-slate-500 text-xs">{text}</span>
+}
+
+// âââ EMPTY STATE ââââââââââââââââââââââââââââââââââââââââââââ
+export function EmptyState({ message, icon: Icon = Eye }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-16 text-slate-500">
+      <Icon className="w-12 h-12 mb-3 text-slate-600" />
+      <p className="text-sm">{message}</p>
+    </div>
+  )
+}
+
+// âââ PAGE HEADER ââââââââââââââââââââââââââââââââââââââââââââ
+export function PageHeader({ title, count, onRefresh }) {
+  return (
+    <div className="flex items-center justify-between">
+      <h2 className="text-xl font-semibold text-slate-100">
+        {title}{count != null ? ` (${count})` : ''}
+      </h2>
+      {onRefresh && (
+        <button onClick={onRefresh} className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-cyan-400">
+          <RefreshCw className="w-3.5 h-3.5" /> Refresh
+        </button>
+      )}
+    </div>
+  )
+}
