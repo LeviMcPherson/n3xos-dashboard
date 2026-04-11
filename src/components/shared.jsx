@@ -175,3 +175,104 @@ export function PageHeader({ title, count, onRefresh }) {
     </div>
   )
 }
+
+
+// ─── SKELETON COMPONENTS ────────────────────────────────────
+export function SkeletonPulse({ className = '' }) {
+  return <div className={`animate-pulse bg-slate-700 rounded ${className}`} />
+}
+
+export function KpiSkeleton() {
+  return (
+    <div className="bg-slate-800 rounded-lg p-4 border-l-4 border-slate-700 animate-pulse">
+      <div className="bg-slate-700 rounded h-3 w-20 mb-2" />
+      <div className="bg-slate-700 rounded h-7 w-16" />
+    </div>
+  )
+}
+
+export function CardSkeleton({ lines = 2 }) {
+  return (
+    <div className="bg-slate-800 rounded-lg p-4 animate-pulse">
+      <div className="flex items-center gap-2 mb-2">
+        <div className="bg-slate-700 rounded h-5 w-14" />
+        <div className="bg-slate-700 rounded h-5 w-16" />
+      </div>
+      <div className="bg-slate-700 rounded h-4 w-3/4 mb-1.5" />
+      {lines > 1 && <div className="bg-slate-700 rounded h-3 w-1/2" />}
+    </div>
+  )
+}
+
+export function DashboardSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="bg-slate-700 rounded h-7 w-48 animate-pulse" />
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {Array.from({ length: 8 }).map((_, i) => <KpiSkeleton key={i} />)}
+      </div>
+      <div>
+        <div className="bg-slate-700 rounded h-4 w-32 mb-3 animate-pulse" />
+        <div className="space-y-2">
+          {Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}
+        </div>
+      </div>
+      <div>
+        <div className="bg-slate-700 rounded h-4 w-28 mb-3 animate-pulse" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="bg-slate-800 rounded-lg p-3 animate-pulse flex items-center justify-between">
+              <div>
+                <div className="bg-slate-700 rounded h-4 w-28 mb-2" />
+                <div className="flex gap-2"><div className="bg-slate-700 rounded h-5 w-12" /><div className="bg-slate-700 rounded h-5 w-14" /></div>
+              </div>
+              <div className="bg-slate-700 rounded h-8 w-10" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function DecisionsSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="bg-slate-700 rounded h-7 w-44 animate-pulse" />
+      </div>
+      <div className="flex gap-2">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="bg-slate-800 rounded h-7 animate-pulse" style={{ width: `${50 + i * 10}px` }} />
+        ))}
+      </div>
+      <div className="space-y-2">
+        {Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)}
+      </div>
+    </div>
+  )
+}
+
+export function SubstrateSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="bg-slate-700 rounded h-7 w-36 animate-pulse" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="bg-slate-800 rounded-lg p-4 animate-pulse space-y-3">
+            <div className="flex items-center gap-2"><div className="bg-slate-700 rounded h-5 w-32" /><div className="bg-slate-700 rounded h-5 w-14" /></div>
+            <div className="bg-slate-700 rounded h-3 w-full" />
+            <div className="bg-slate-700 rounded h-3 w-2/3" />
+            <div className="flex gap-1 items-end h-6">
+              {Array.from({ length: 4 }).map((_, j) => <div key={j} className="bg-slate-700 rounded w-3" style={{ height: `${8 + j * 4}px` }} />)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
