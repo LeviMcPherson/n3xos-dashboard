@@ -79,7 +79,7 @@ export default function DecisionsPage() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <Badge text={d.urgency || '\u2014'} variant={d.urgency} />
+                    <Badge text={d.urgency || '—'} variant={d.urgency} />
                     <Badge text={d.status} variant={d.status} />
                   </div>
                   <p className="text-sm text-slate-200">{d.title}</p>
@@ -93,7 +93,7 @@ export default function DecisionsPage() {
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium bg-emerald-600/20 text-emerald-400 border border-emerald-600/40 hover:bg-emerald-600/30 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                       >
                         <Check size={13} />
-                        {isActing ? 'Resolving\u2026' : 'Resolve'}
+                        {isActing ? 'Resolving…' : 'Resolve'}
                       </button>
                       <button
                         onClick={() => handleAction(d.id, 'deferred')}
@@ -101,7 +101,7 @@ export default function DecisionsPage() {
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium bg-amber-600/20 text-amber-400 border border-amber-600/40 hover:bg-amber-600/30 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                       >
                         <Clock size={13} />
-                        {isActing ? 'Deferring\u2026' : 'Defer'}
+                        {isActing ? 'Deferring…' : 'Defer'}
                       </button>
                     </div>
                   )}
