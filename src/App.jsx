@@ -59,7 +59,7 @@ export default function App() {
           ))}
         </nav>
         <div className="p-3 border-t border-slate-800">
-          <div className="text-xs text-slate-600">NXC \u2014 Tenant 001</div>
+          <div className="text-xs text-slate-600">NXC — Tenant 001</div>
           <div className="text-xs text-slate-600 truncate">{USER_EMAIL}</div>
         </div>
       </div>
