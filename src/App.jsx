@@ -1,9 +1,10 @@
+import { useState, useEffect } from 'react'
 import { useNavigate, Routes, Route, NavLink, Navigate } from 'react-router-dom'
 import {
   LayoutDashboard, Layers, ListChecks, Radio, GitBranch,
   Microscope, TrendingUp, Percent, Cpu, History
 } from 'lucide-react'
-import { USER_EMAIL } from './config'
+import { USER_EMAIL, dashboardUrl } from './config'
 import DashboardPage from './pages/Dashboard'
 import SubstratePage from './pages/Substrate'
 import DecisionsPage from './pages/Decisions'
@@ -31,6 +32,18 @@ const NAV = [
 
 export default function App() {
   const navigate = useNavigate()
+  const [tenantLabel, setTenantLabel] = useState('Loading—')
+
+  useEffect(() => {
+    fetch(dashboardUrl)
+      .then(r => r.json())
+      .then(d => {
+        if (d.tenant_name) setTenantLabel(d.tenant_name)
+        else if (d.tenant_slug) setTenantLabel(d.tenant_slug)
+      })
+      .catch(() => setTenantLabel('N3XOS'))
+  }, [])
+
   return (
     <div className="flex h-screen bg-slate-950 text-slate-100 overflow-hidden">
       {/* Sidebar */}
@@ -39,12 +52,10 @@ export default function App() {
           <h1 className="text-lg font-bold text-cyan-400 tracking-wide">N3XOS</h1>
           <p className="text-xs text-slate-500 mt-0.5">Operator Substrate</p>
         </div>
+
         <nav className="flex-1 py-2 overflow-y-auto">
           {NAV.map(({ to, label, icon: Icon }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={to === '/'}
+            <NavLink key={to} to={to} end={to === '/'}
               className={({ isActive }) =>
                 `w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                   isActive
@@ -58,8 +69,9 @@ export default function App() {
             </NavLink>
           ))}
         </nav>
+
         <div className="p-3 border-t border-slate-800">
-          <div className="text-xs text-slate-600">NXC — Tenant 001</div>
+          <div className="text-xs text-slate-600">{tenantLabel}</div>
           <div className="text-xs text-slate-600 truncate">{USER_EMAIL}</div>
         </div>
       </div>
@@ -80,6 +92,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+
       <Walkthrough onNavigate={navigate} />
     </div>
   )
